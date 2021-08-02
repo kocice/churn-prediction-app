@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <div class="container pt-5">
+        <div class="row">
+
+        <h1>Prediction Results</h1>
+
+            <table class="table">
+                <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">age</th>
+                <th scope="col">total_relationship_count</th>
+                <th scope="col">contacts_count_12_mon</th>
+                <th scope="col">total_revolving_bal</th>
+                <th scope="col">avg_open_to_buy</th>
+                <th scope="col">total_amt_chng_q4_q1</th>
+                <th scope="col">total_trans_amt</th>
+                <th scope="col">total_trans_ct</th>
+                <th scope="col">total_ct_chng_q4_q1</th>
+                <th scope="col">Prediction</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in dataset %}
+                    <tr>
+                    <th scope="row">{{ data.id }}</th>
+                    <td>{{ data.age }}</td>
+                    <td>{{ data.total_relationship_count }}</td>
+                    <td>{{ data.contacts_count_12_mon }}</td>
+                    <td>{{ data.total_revolving_bal }}</td>
+                    <td>{{ data.avg_open_to_buy }}</td>
+                    <td>{{ data.total_amt_chng_q4_q1 }}</td>
+                    <td>{{ data.total_trans_amt }}</td>
+                    <td>{{ data.total_trans_ct }}</td>
+                    <td>{{ data.total_ct_chng_q4_q1 }}</td>
+                    <td>{{ data.classification }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

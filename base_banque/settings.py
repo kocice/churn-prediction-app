@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-v3c$84*+_a)do&0kb+jzw6y!%c544=i9-64#9n8nz%n(w!0q0h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://bankretention.herokuapp.com']
 
 
 # Application definition

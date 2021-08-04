@@ -1,2 +1,5 @@
 __pycache__/
+.idea/
 db.sqlite3
+bank_data.csv
+db.py

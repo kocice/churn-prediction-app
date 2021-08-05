@@ -1,0 +1,209 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Prédiction individuelle {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Prediction Results</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Prediction Input:</h5>
+                <div>age: <span id="ag"></span></div>
+                <div>total_relationship_count: <span id="total_rel_count"></span></div>
+                <div>contacts_count_12_mon: <span id="cont_count"></span></div>
+                <div>total_revolving_bal: <span id="total_rev_bal"></span></div>
+                <div>avg_open_to_buy: <span id="avg"></span></div>
+                <div>total_amt_chng_q4_q1: <span id="total_amt_chng"></span></div>
+                <div>total_trans_amt: <span id="total_amt"></span></div>
+                <div>total_trans_ct: <span id="total_ct"></span></div>
+                <div>total_ct_chng_q4_q1: <span id="total_ct_chng"></span></div>
+                <h5 class="pt-3">Prediction Classification:</h5>
+                <div id="prediction"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a class="btn btn-primary" href="/results" role="button">DB PRED</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">SIMPLON</h4>
+                <p class="card-category">INFORMATION</p>
+            </div>
+            <div class="card-body">
+                <form id="post-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">UserID (disabled)</label>
+                                <input type="text" class="form-control" disabled value="{{ request.user.id }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Age</label>
+                                <input type="number" step="1" min="18" class="form-control" id="age" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Solde renouvelable</label>
+                                <input type="number" min="0" step="1" class="form-control" id="total_revolving_bal" placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Ligne de crédit</label>
+                                <input type="number" step="1" min="0" class="form-control" id="avg_open_to_buy" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Changement du montant</label>
+                                <input type="number" step="1" min="0" class="form-control" id="total_amt_chng_q4_q1" placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Montant total de la transaction</label>
+                                <input type="number" step="1" min="0" class="form-control" id="total_trans_amt" placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Nombre de produits</label>
+                                <select name="total_relationship_count" id="total_relationship_count">
+                                    <option value="1">Un Produit</option>
+                                    <option value="2">Deux produits</option>
+                                    <option value="3">Trois Produits</option>
+                                    <option value="4">Quatre Produits</option>
+                                    <option value="5">Cinq Produits</option>
+                                    <option value="6">Sixe Produits</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Nombre de contacts</label>
+                                <select name="contacts_count_12_mon" id="contacts_count_12_mon">
+                                    <option value="0">Zero contacts</option>
+                                    <option value="1">Un contacts</option>
+                                    <option value="3">Deux contacts</option>
+                                    <option value="4">Trois contacts</option>
+                                    <option value="5">Quatre contacts</option>
+                                    <option value="6">Cinq contacts</option>
+                                    <option value="7">Sixe contacts</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Nombre total de transactions</label>
+                                <input type="number" step="1" min="0" class="form-control" id="total_trans_ct" placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Transaction</label>
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Changement du montant de la transaction</label>
+                                    <input type="number" step="1" min="0" class="form-control" id="total_ct_chng_q4_q1" placeholder="" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal">Envoyer</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="#pablo">
+                    <img class="img" src="/static/assets/img/faces/marc.jpg" />
+                </a>
+            </div>
+            <div class="card-body">
+                <h6 class="card-category text-gray">
+                    {{ request.user.username }}
+                </h6>
+                <h4 class="card-title">
+                    {{ request.suser.email }}
+                </h4>
+                <p class="card-description">
+                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                </p>
+                <a href="{% url 'pred_banque:predict_db' 1 %}" class="btn btn-primary btn-round">DB pred</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+    $(document).on('submit', '#post-form',function(e){
+        // e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "pred_banque:submit_prediction" %}',
+            data:{
+                age:$('#age').val(),
+                total_relationship_count:$('#total_relationship_count').val(),
+                contacts_count_12_mon:$('#contacts_count_12_mon').val(),
+                total_revolving_bal:$('#total_revolving_bal').val(),
+                avg_open_to_buy:$('#avg_open_to_buy').val(),
+                total_amt_chng_q4_q1:$('#total_amt_chng_q4_q1').val(),
+                total_trans_amt:$('#total_trans_amt').val(),
+                total_trans_ct:$('#total_trans_ct').val(),
+                total_ct_chng_q4_q1:$('#total_ct_chng_q4_q1').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            success:function(json) {
+                document.forms["post-form"].reset();
+                document.getElementById("prediction").innerHTML = json['result']
+                document.getElementById("ag").innerHTML = json['age']
+                document.getElementById("total_rel_count").innerHTML = json['total_relationship_count']
+                document.getElementById("cont_count").innerHTML = json['contacts_count_12_mon']
+                document.getElementById("total_rev_bal").innerHTML = json['total_revolving_bal']
+                document.getElementById("avg").innerHTML = json['avg_open_to_buy']
+                document.getElementById("total_amt_chng").innerHTML = json['total_amt_chng_q4_q1']
+                document.getElementById("total_amt").innerHTML = json['total_trans_amt']
+                document.getElementById("total_ct").innerHTML = json['total_trans_ct']
+                document.getElementById("total_ct_chng").innerHTML = json['total_ct_chng_q4_q1']
+            },
+            error : function(xhr,errmsg,err) {
+
+            }
+        });
+    })
+</script>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

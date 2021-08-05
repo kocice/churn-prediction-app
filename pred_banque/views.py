@@ -37,7 +37,7 @@ def create_df(data):
     )
 
 
-def view_predict_db(request):
+def view_predict_db(request, nb_page):
     data = create_df(read_data())
     df = data.drop('attrition_flag', axis=1)
     variable.remove('attrition_flag')
@@ -46,11 +46,11 @@ def view_predict_db(request):
     pred = pd.DataFrame(result).rename(columns={0: 'pred'})
     pred['pred'] = pred['pred'].map({0: 'Existing Customer', 1: 'Attrited Customer'})
     df = pd.concat([data, pred], axis=1)
-    # data['pred'] = classification
-    # html = data.to_html()
     columns = df.columns
-    # return HttpResponse(pred.to_html())
-    return render(request, "db_bank.html", context={'data': df.values, 'columns': columns})
+    if nb_page == 0:
+        return render(request, "compact-table.html", context={'data': df.values, 'columns': columns})
+    else:
+        return render(request, "full-screen-table.html", context={'data': df.values, 'columns': columns})
 
 
 def predict_chances(request):
@@ -105,3 +105,7 @@ def view_results(request):
     # Submit prediction and show all
     data = {"dataset": PredResults.objects.all()}
     return render(request, "results.html", data)
+
+
+def view_dash(request):
+    return render(request, "page-user.html")

@@ -96,11 +96,11 @@
                     <tr>
                         {% for i in value%}
                             {% if i == 'Existing Customer' %}
-                                <td style="color: #0C9C14">{{i}}</td>
+                                <td class="text-center" style="color: #0C9C14">{{i}}</td>
                             {% elif i == 'Attrited Customer' %}
-                                <td style="color: rgba(243,6,31,0.82)">{{i}}</td>
+                                <td class="text-center" style="color: rgba(243,6,31,0.82)">{{i}}</td>
                             {% else %}
-                                <td>{{i}}</td>
+                                <td class="text-center">{{i}}</td>
                         {% endif%}
 
                         {% endfor%}

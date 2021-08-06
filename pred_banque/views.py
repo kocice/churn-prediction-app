@@ -54,8 +54,9 @@ def view_predict_db(request, nb_page):
 
 
 def predict_chances(request):
-    # if request.POST.get('action') == 'post':
-    if request.method == 'POST':
+    if request.POST.get('action') == 'post':
+        # return JsonResponse({'result': 'Bonjour'})
+        # # if request.method == 'POST':
         # Receive data from client
         age = int(request.POST.get('age'))
         total_relationship_count = int(request.POST.get('total_relationship_count'))
@@ -71,6 +72,8 @@ def predict_chances(request):
             age, total_relationship_count, contacts_count_12_mon, total_revolving_bal,
             avg_open_to_buy, total_amt_chng_q4_q1, total_trans_amt, total_trans_ct, total_ct_chng_q4_q1
         ]
+
+        # return JsonResponse({'result': 'Bonjour'})
 
         # Make prediction
         data = pd.DataFrame(info, index=variable).T

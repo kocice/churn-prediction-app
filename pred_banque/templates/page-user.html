@@ -30,7 +30,7 @@
                 <div id="prediction"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                 <a class="btn btn-primary" href="/results" role="button">DB PRED</a>
             </div>
         </div>
@@ -45,7 +45,7 @@
                 <p class="card-category">INFORMATION</p>
             </div>
             <div class="card-body">
-                <form id="post-form">
+                <form id="post-form" method="POST">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-5">
@@ -109,11 +109,11 @@
                                 <select name="contacts_count_12_mon" id="contacts_count_12_mon">
                                     <option value="0">Zero contacts</option>
                                     <option value="1">Un contacts</option>
-                                    <option value="3">Deux contacts</option>
-                                    <option value="4">Trois contacts</option>
-                                    <option value="5">Quatre contacts</option>
-                                    <option value="6">Cinq contacts</option>
-                                    <option value="7">Sixe contacts</option>
+                                    <option value="2">Deux contacts</option>
+                                    <option value="3">Trois contacts</option>
+                                    <option value="4">Quatre contacts</option>
+                                    <option value="5">Cinq contacts</option>
+                                    <option value="6">Sixe contacts</option>
                                 </select>
                             </div>
                         </div>
@@ -163,47 +163,70 @@
         </div>
     </div>
 </div>
-    <script>
-    $(document).on('submit', '#post-form',function(e){
-        // e.preventDefault();
-        $.ajax({
-            type:'POST',
-            url:'{% url "pred_banque:submit_prediction" %}',
-            data:{
-                age:$('#age').val(),
-                total_relationship_count:$('#total_relationship_count').val(),
-                contacts_count_12_mon:$('#contacts_count_12_mon').val(),
-                total_revolving_bal:$('#total_revolving_bal').val(),
-                avg_open_to_buy:$('#avg_open_to_buy').val(),
-                total_amt_chng_q4_q1:$('#total_amt_chng_q4_q1').val(),
-                total_trans_amt:$('#total_trans_amt').val(),
-                total_trans_ct:$('#total_trans_ct').val(),
-                total_ct_chng_q4_q1:$('#total_ct_chng_q4_q1').val(),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                action: 'post'
-            },
-            success:function(json) {
-                document.forms["post-form"].reset();
-                document.getElementById("prediction").innerHTML = json['result']
-                document.getElementById("ag").innerHTML = json['age']
-                document.getElementById("total_rel_count").innerHTML = json['total_relationship_count']
-                document.getElementById("cont_count").innerHTML = json['contacts_count_12_mon']
-                document.getElementById("total_rev_bal").innerHTML = json['total_revolving_bal']
-                document.getElementById("avg").innerHTML = json['avg_open_to_buy']
-                document.getElementById("total_amt_chng").innerHTML = json['total_amt_chng_q4_q1']
-                document.getElementById("total_amt").innerHTML = json['total_trans_amt']
-                document.getElementById("total_ct").innerHTML = json['total_trans_ct']
-                document.getElementById("total_ct_chng").innerHTML = json['total_ct_chng_q4_q1']
-            },
-            error : function(xhr,errmsg,err) {
 
-            }
-        });
-    })
-</script>
 
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>-->
+
+    <script>
+    $(document).on('submit', '#post-form',function(e){
+        var formState = form.checkValidity();
+        if (formState) {
+            e.preventDefault();
+            $('#someid').attr('name', 'value');
+            $.ajax({
+                method: 'POST',
+                url: '{% url "pred_banque:submit_prediction" %}',
+                data: {
+                    age: $('#age').val(),
+                    total_relationship_count: $('#total_relationship_count').val(),
+                    contacts_count_12_mon: $('#contacts_count_12_mon').val(),
+                    total_revolving_bal: $('#total_revolving_bal').val(),
+                    avg_open_to_buy: $('#avg_open_to_buy').val(),
+                    total_amt_chng_q4_q1: $('#total_amt_chng_q4_q1').val(),
+                    total_trans_amt: $('#total_trans_amt').val(),
+                    total_trans_ct: $('#total_trans_ct').val(),
+                    total_ct_chng_q4_q1: $('#total_ct_chng_q4_q1').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+            })
+                //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
+                /*On peut par exemple convertir cette réponse en chaine JSON et insérer
+                * cette chaine dans un div id="res"*/
+                .done(function (json) {
+                    document.forms["post-form"].reset();
+                    document.forms["post-form"].reset();
+                    document.getElementById("prediction").innerHTML = json['result']
+                    document.getElementById("ag").innerHTML = json['age']
+                    document.getElementById("total_rel_count").innerHTML = json['total_relationship_count']
+                    document.getElementById("cont_count").innerHTML = json['contacts_count_12_mon']
+                    document.getElementById("total_rev_bal").innerHTML = json['total_revolving_bal']
+                    document.getElementById("avg").innerHTML = json['avg_open_to_buy']
+                    document.getElementById("total_amt_chng").innerHTML = json['total_amt_chng_q4_q1']
+                    document.getElementById("total_amt").innerHTML = json['total_trans_amt']
+                    document.getElementById("total_ct").innerHTML = json['total_trans_ct']
+                    document.getElementById("total_ct_chng").innerHTML = json['total_ct_chng_q4_q1']
+                })
+
+                //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
+                //On peut afficher les informations relatives à la requête et à l'erreur
+                .fail(function (error) {
+                    alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+                });
+        }
+        else{
+            alert("Remplissez correctement le formulaire")
+        }
+    })
+</script>
+
+
+
+{% endblock javascripts %}
+

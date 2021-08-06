@@ -1,2 +1,7 @@
 __pycache__/
+<<<<<<< HEAD
 .idea/
+=======
+bank_data.csv
+db.py
+>>>>>>> master

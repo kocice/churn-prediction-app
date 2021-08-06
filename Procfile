@@ -1,1 +1,1 @@
-web: gunicorn banque.wsgi
+web: gunicorn base_banque.wsgi

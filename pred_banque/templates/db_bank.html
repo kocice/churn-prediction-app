@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="col-md-12 my-5">
+<!--    <table class="table table-responsive table-hover col-md-12">-->
+
+    <table id="example" class="display table-responsive" style="width:100%">
+        <thead style="background-color: #343a40; color: #fff">
+            <tr>
+                {% for col in columns %}
+                    <th scope="col" style="font-size: 12px;">{{col|title}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for value in data %}
+            <tr>
+                {% for i in value%}
+                    <td>{{i}}</td>
+                {% endfor%}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+</script>
+
+{% endblock %}

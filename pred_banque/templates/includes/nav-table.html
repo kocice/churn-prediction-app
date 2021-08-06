@@ -1,0 +1,51 @@
+{% load static %}
+
+<div class="fixed-plugin" style="top: 300px">
+    <div class="dropdown open">
+        <a href="#" data-toggle="dropdown">
+            <i class="fa fa-cog fa-2x"> </i>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header-title">Adjustments</li>
+            <li class="adjustments-line">
+                <a href="javascript:void(0)" class="switch-trigger">
+                    <p>Full Background</p>
+                    <div class="switch"
+                         data-on-label="ON"
+                         data-off-label="OFF">
+                        <input type="checkbox" checked data-target="section-header" data-type="parallax"/>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+            <li class="adjustments-line">
+                <a href="javascript:void(0)" class="switch-trigger">
+                    <p>Colors</p>
+                    <div class="pull-right">
+                        <span class="badge filter badge-blue" data-color="blue"></span>
+                        <span class="badge filter badge-azure" data-color="azure"></span>
+                        <span class="badge filter badge-green" data-color="green"></span>
+                        <span class="badge filter badge-orange active" data-color="orange"></span>
+                        <span class="badge filter badge-red" data-color="red"></span>
+                        <span class="badge filter badge-red" data-color="#b9d8ffff"></span>
+                        <span class="badge filter badge-red" data-color="#7d777fe9"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+            <li class="header-title">Layouts</li>
+            <li>
+                <a class="img-holder" href="{% url 'pred_banque:predict_db' 0 %}">
+                    <img src="{% static 'assets/img/compact.jpg' %}">
+                    <h5>Compact Table</h5>
+                </a>
+            </li>
+            <li class="active">
+                <a class="img-holder" href="{% url 'pred_banque:predict_db' 1 %}">
+                    <img src="{% static 'assets/img/full.jpg' %}">
+                    <h5>Full Screen Table</h5>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

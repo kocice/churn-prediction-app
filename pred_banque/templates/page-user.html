@@ -178,7 +178,6 @@
         var formState = form.checkValidity();
         if (formState) {
             e.preventDefault();
-            $('#someid').attr('name', 'value');
             $.ajax({
                 method: 'POST',
                 url: '{% url "pred_banque:submit_prediction" %}',

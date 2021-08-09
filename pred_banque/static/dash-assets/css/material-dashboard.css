@@ -12,7 +12,18 @@
 =========================================================
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*/
- 
+
+/*=================================== Custom CSS =====================================================================*/
+.info-pred {
+  font-weight: bold;
+}
+
+.pred-color {
+  color: #0c7cd5;
+}
+
+
+
 
 /*     brand Colors              */
 

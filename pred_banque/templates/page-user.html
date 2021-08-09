@@ -18,16 +18,16 @@
             <div class="modal-body">
                 <h5>Prediction Input:</h5>
                 <div>age: <span id="ag"></span></div>
-                <div>total_relationship_count: <span id="total_rel_count"></span></div>
-                <div>contacts_count_12_mon: <span id="cont_count"></span></div>
-                <div>total_revolving_bal: <span id="total_rev_bal"></span></div>
-                <div>avg_open_to_buy: <span id="avg"></span></div>
-                <div>total_amt_chng_q4_q1: <span id="total_amt_chng"></span></div>
-                <div>total_trans_amt: <span id="total_amt"></span></div>
-                <div>total_trans_ct: <span id="total_ct"></span></div>
-                <div>total_ct_chng_q4_q1: <span id="total_ct_chng"></span></div>
+                <div>total_relationship_count: <span id="total_rel_count" class="info-pred"></span></div>
+                <div>contacts_count_12_mon: <span id="cont_count" class="info-pred"></span></div>
+                <div>total_revolving_bal: <span id="total_rev_bal" class="info-pred"></span></div>
+                <div>avg_open_to_buy: <span id="avg" class="info-pred"></span></div>
+                <div>total_amt_chng_q4_q1: <span id="total_amt_chng" class="info-pred"></span></div>
+                <div>total_trans_amt: <span id="total_amt" class="info-pred"></span></div>
+                <div>total_trans_ct: <span id="total_ct" class="info-pred"></span></div>
+                <div>total_ct_chng_q4_q1: <span id="total_ct_chng" class="info-pred"></span></div>
                 <h5 class="pt-3">Prediction Classification:</h5>
-                <div id="prediction"></div>
+                <div id="prediction" class="pred-color"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -143,11 +143,11 @@
     </div>
     <div class="col-md-4">
         <div class="card card-profile">
-            <div class="card-avatar">
-                <a href="#pablo">
-                    <img class="img" src="/static/assets/img/faces/marc.jpg" />
-                </a>
-            </div>
+<!--            <div class="card-avatar">-->
+<!--                <a href="#pablo">-->
+<!--                    <img class="img" src="/static/assets/img/faces/marc.jpg" />-->
+<!--                </a>-->
+<!--            </div>-->
             <div class="card-body">
                 <h6 class="card-category text-gray">
                     {{ request.user.username }}
@@ -156,7 +156,7 @@
                     {{ request.suser.email }}
                 </h4>
                 <p class="card-description">
-                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                    Clicker ici pour la prédiction multiple
                 </p>
                 <a href="{% url 'pred_banque:predict_db' 1 %}" class="btn btn-primary btn-round">DB pred</a>
             </div>
@@ -175,53 +175,52 @@
 
     <script>
     $(document).on('submit', '#post-form',function(e){
-        var formState = form.checkValidity();
-        if (formState) {
-            e.preventDefault();
-            $.ajax({
-                method: 'POST',
-                url: '{% url "pred_banque:submit_prediction" %}',
-                data: {
-                    age: $('#age').val(),
-                    total_relationship_count: $('#total_relationship_count').val(),
-                    contacts_count_12_mon: $('#contacts_count_12_mon').val(),
-                    total_revolving_bal: $('#total_revolving_bal').val(),
-                    avg_open_to_buy: $('#avg_open_to_buy').val(),
-                    total_amt_chng_q4_q1: $('#total_amt_chng_q4_q1').val(),
-                    total_trans_amt: $('#total_trans_amt').val(),
-                    total_trans_ct: $('#total_trans_ct').val(),
-                    total_ct_chng_q4_q1: $('#total_ct_chng_q4_q1').val(),
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                    action: 'post'
-                },
-            })
-                //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
-                /*On peut par exemple convertir cette réponse en chaine JSON et insérer
-                * cette chaine dans un div id="res"*/
-                .done(function (json) {
-                    document.forms["post-form"].reset();
-                    document.forms["post-form"].reset();
-                    document.getElementById("prediction").innerHTML = json['result']
-                    document.getElementById("ag").innerHTML = json['age']
-                    document.getElementById("total_rel_count").innerHTML = json['total_relationship_count']
-                    document.getElementById("cont_count").innerHTML = json['contacts_count_12_mon']
-                    document.getElementById("total_rev_bal").innerHTML = json['total_revolving_bal']
-                    document.getElementById("avg").innerHTML = json['avg_open_to_buy']
-                    document.getElementById("total_amt_chng").innerHTML = json['total_amt_chng_q4_q1']
-                    document.getElementById("total_amt").innerHTML = json['total_trans_amt']
-                    document.getElementById("total_ct").innerHTML = json['total_trans_ct']
-                    document.getElementById("total_ct_chng").innerHTML = json['total_ct_chng_q4_q1']
-                })
+        // var formState = form.checkValidity();
+        // if (formState) {
+        e.preventDefault();
+        $.ajax({
+            method: 'POST',
+            url: '{% url "pred_banque:submit_prediction" %}',
+            data: {
+                age: $('#age').val(),
+                total_relationship_count: $('#total_relationship_count').val(),
+                contacts_count_12_mon: $('#contacts_count_12_mon').val(),
+                total_revolving_bal: $('#total_revolving_bal').val(),
+                avg_open_to_buy: $('#avg_open_to_buy').val(),
+                total_amt_chng_q4_q1: $('#total_amt_chng_q4_q1').val(),
+                total_trans_amt: $('#total_trans_amt').val(),
+                total_trans_ct: $('#total_trans_ct').val(),
+                total_ct_chng_q4_q1: $('#total_ct_chng_q4_q1').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+        })
+        //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
+        /*On peut par exemple convertir cette réponse en chaine JSON et insérer
+        * cette chaine dans un div id="res"*/
+        .done(function (json) {
+            document.getElementById("prediction").innerHTML = json['result'];
+            document.getElementById("ag").innerHTML = json['age'];
+            document.getElementById("total_rel_count").innerHTML = json['total_relationship_count'];
+            document.getElementById("cont_count").innerHTML = json['contacts_count_12_mon'];
+            document.getElementById("total_rev_bal").innerHTML = json['total_revolving_bal'];
+            document.getElementById("avg").innerHTML = json['avg_open_to_buy'];
+            document.getElementById("total_amt_chng").innerHTML = json['total_amt_chng_q4_q1'];
+            document.getElementById("total_amt").innerHTML = json['total_trans_amt'];
+            document.getElementById("total_ct").innerHTML = json['total_trans_ct'];
+            document.getElementById("total_ct_chng").innerHTML = json['total_ct_chng_q4_q1'];
+            document.forms["post-form"].reset();
+        })
 
-                //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
-                //On peut afficher les informations relatives à la requête et à l'erreur
-                .fail(function (error) {
-                    alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
-                });
-        }
-        else{
-            alert("Remplissez correctement le formulaire")
-        }
+        //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
+        //On peut afficher les informations relatives à la requête et à l'erreur
+        .fail(function (error) {
+            alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+        });
+        // }
+        // else{
+        //     alert("Remplissez correctement le formulaire")
+        // }
     })
 </script>
 

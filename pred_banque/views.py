@@ -1,7 +1,13 @@
+import os
+import json
+
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 import pandas as pd
 import joblib
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import PredResults, BankData
 
 variable = ['Customer_Age', 'Total_Relationship_Count', 'Contacts_Count_12_mon',
@@ -112,3 +118,18 @@ def view_results(request):
 
 def view_dash(request):
     return render(request, "page-user.html")
+
+
+def upload_data(request):
+    return render(request, "upload_data.html")
+
+
+@csrf_exempt
+def affiche_data(request):
+    if request.method == "POST":
+        data = json.loads(request.POST.get('dataset'))
+    else:
+        data = "Je n'en sais rien!"
+    data = pd.DataFrame(data)
+    print(data)
+    return HttpResponse(data)

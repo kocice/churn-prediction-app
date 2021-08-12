@@ -1,41 +1,3 @@
-{% extends "layouts/base-table.html" %}
-{% load static %}
-
-{% block content %}
-<div class="wrapper">
-    <!--   Creative Tim Branding   -->
-    <a href="http://creative-tim.com">
-        <div class="logo-container full-screen-table-demo">
-            <div class="logo">
-                <img src="{% static 'assets/img/new_logo.png' %}">
-            </div>
-            <div class="brand">
-                DB Prediction
-            </div>
-        </div>
-    </a>
-
-    <div class="fresh-table full-color-orange full-screen-table">
-        <!--
-          Available colors for the full background: full-color-blue, full-color-azure, full-color-green, full-color-red, full-color-orange
-          Available colors only for the toolbar: toolbar-color-blue, toolbar-color-azure, toolbar-color-green, toolbar-color-red, toolbar-color-orange
-        -->
-        {% include 'includes/table.html' %}
-    </div>
-
-    <div class="description description-footer">
-        <h2 id="sharrreTitle">Merci pour votre confiance!</h2>
-        <br>
-        <button id="twitter" class="btn btn-info btn-social btn-twitter btn-round btn-fill btn-wd"><i class="fa fa-twitter"></i></button>
-        <button id="facebook" class="btn btn-info btn-social btn-facebook btn-round btn-fill btn-wd"><i class="fa fa-facebook-square"></i></button>
-
-    </div>
-</div>
-
-
-{% endblock content %}
-
-{% block javascripts %}
 <script>
     var $table = $('#fresh-table')
 
@@ -146,4 +108,3 @@
         url: location.href
     })
 </script>
-{% endblock javascripts %}

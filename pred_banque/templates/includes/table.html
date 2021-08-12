@@ -1,29 +1,29 @@
 <table id="fresh-table" class="table">
-            <thead>
-                <th>#</th>
-            {% for col in columns %}
-                <th data-field="{{col|lower}}">{{col}}</th>
-            {% endfor %}
+    <thead>
+        <th>#</th>
+        {% for col in columns %}
+            <th data-field="{{col|lower}}">{{col}}</th>
+        {% endfor %}
 <!--            <th data-field="actions" data-formatter="operateFormatter" data-events="operateEvents">Actions</th>-->
-            </thead>
-            <tbody>
-                {% for value in data %}
-                    <tr>
-                        {% for i in value%}
-                            {% if forloop.counter == 1 %}
-                                <td>{{forloop.parentloop.counter}}</td>
-                            {% endif %}
+    </thead>
+    <tbody>
+        {% for value in data %}
+            <tr>
+                {% for i in value%}
+                    {% if forloop.counter == 1 %}
+                        <td>{{forloop.parentloop.counter}}</td>
+                    {% endif %}
 
-                            {% if i == 'Existing Customer' %}
-                                <td class="text-center" style="color: #0C9C14">{{i}}</td>
-                            {% elif i == 'Attrited Customer' %}
-                                <td class="text-center" style="color: rgba(243,6,31,0.82)">{{i}}</td>
-                            {% else %}
-                                <td class="text-center">{{i}}</td>
-                            {% endif%}
+                    {% if i == 'Existing Customer' %}
+                        <td class="text-center" style="color: #0C9C14">{{i}}</td>
+                    {% elif i == 'Attrited Customer' %}
+                        <td class="text-center" style="color: rgba(243,6,31,0.82)">{{i}}</td>
+                    {% else %}
+                        <td class="text-center">{{i}}</td>
+                    {% endif%}
 
-                        {% endfor%}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                {% endfor%}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

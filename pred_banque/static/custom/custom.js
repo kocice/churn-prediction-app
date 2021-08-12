@@ -45,6 +45,7 @@ $('.image-upload-wrap').bind('dragleave', function () {
 var Data
 var Cells
 var getOptions
+var click = true;
 
 $(function () {
 $("#file").bind("change", function () {
@@ -155,16 +156,13 @@ function affiche() {
 
 function getSelectedRowData() {
     let selectedNodes = getOptions.api.getSelectedNodes();
-	// let selectedNodes = this.gridApi.getSelectedNodes();
 	let selectedData = selectedNodes.map(node => node.data);
-	alert(`Selected Nodes:\n${JSON.stringify(selectedData)}`);
-	// return JSON.parse(JSON.stringify(selectedData))
+	// alert(`Selected Nodes:\n${JSON.stringify(selectedData)}`);
     return JSON.stringify(selectedData)
 }
 
 $("#envoyer").on("click", function() {
     let dataset = getSelectedRowData();
-    console.log(dataset)
     $.ajax({
         method: 'POST',
         url: '/affiche_data/',
@@ -173,5 +171,41 @@ $("#envoyer").on("click", function() {
             // csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
         },
+    })
+    .done(function (response) {
+        console.log((response))
+        $("#myGrid").empty();
+
+        var columnDefs = [];
+        for (let key in response[0]) {
+            console.log(key);
+            columnDefs.push({ field: key },);
+        }
+
+        const gridOptions = {
+            columnDefs: columnDefs,
+            rowData: response,
+
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                tooltipComponent: 'customTooltip',
+            },
+            rowDragManaged: true,
+            headerHeight: 40,
+            enableCharts: true,
+            pagination : true,
+        };
+        click = false;
+        $("#envoyer").attr("id","tel")
+        $("#tel").html("Télécharger").on("click", function() {
+            onBtnExport()
+        });
+        const gridDiv = document.querySelector('#myGrid');
+        new agGrid.Grid(gridDiv, gridOptions);
+
+        function onBtnExport() {
+            gridOptions.api.exportDataAsCsv();
+        }
     })
 })

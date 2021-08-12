@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import PredResults, BankData
 
+# La liste des variables pertinantes de mon modèle
 variable = ['Customer_Age', 'Total_Relationship_Count', 'Contacts_Count_12_mon',
             'Total_Revolving_Bal', 'Avg_Open_To_Buy', 'Total_Amt_Chng_Q4_Q1',
             'Total_Trans_Amt', 'Total_Trans_Ct', 'Total_Ct_Chng_Q4_Q1']
@@ -126,10 +127,37 @@ def upload_data(request):
 
 @csrf_exempt
 def affiche_data(request):
+    """
+    fonction qui reçoit un dictionnaire et fait des prédictions et retourne le résultat en json
+    :param request:
+    :return:
+    """
     if request.method == "POST":
+        # Je récupère le data au format json renvoyer par la requette ajax
+        # puis je le transform en dictionnaire.
         data = json.loads(request.POST.get('dataset'))
     else:
         data = "Je n'en sais rien!"
+
+    # Je transform les données en dataframe pour pouvoir extraire les variables
+    # pertinantes et appliquer la normalisation
     data = pd.DataFrame(data)
-    print(data)
-    return HttpResponse(data)
+    dataset = data[variable]
+
+    # Make prediction
+    dataset.loc[:, :] = norm.transform(dataset)
+    result = model.predict(dataset)
+    pred = pd.DataFrame(result).rename(columns={0: 'Predict'})
+    pred['Predict'] = pred['Predict'].map({0: 'Existing Customer', 1: 'Attrited Customer'})
+    # Ajoute la colonnes de prédiction à mon dataframe utilisé pour la prédiction
+    df = pd.concat([data[variable], pred], axis=1)
+
+    # Transformation de la reponse en json pour affichage avec ag grid
+    df_json = df.T.to_json()
+    df_json = json.loads(df_json)
+    json_response = []
+
+    for value in df_json.values():
+        json_response.append(value)
+    print(json_response)
+    return JsonResponse(json_response, safe=False)

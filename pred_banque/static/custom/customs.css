@@ -1,5 +1,5 @@
 :root {
-  --card-drag-color: #06e8e0;
+  --card-drag-color: #800080;
 }
 
 body {
@@ -65,7 +65,7 @@ body {
 
 .image-dropping,
 .image-upload-wrap:hover {
-  background-color: #9ab4b4;
+  background-color: #e4c1ec;
   border: 4px dashed #ffffff;
 }
 

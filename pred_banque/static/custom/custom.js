@@ -1,4 +1,3 @@
-
 function readURL(input) {
     if (input.files && input.files[0]) {
         var filetype = input.files[0].type;
@@ -77,11 +76,8 @@ $("#file").bind("change", function () {
                             }
                             jsonArray.push(obj);
                         }
-                        //Converting to json and json string to div
-                        // $("#DivJson").html(JSON.stringify(jsonArray));
                         Data = JSON.stringify(jsonArray)
                         Data = JSON.parse(Data)
-                        // console.log(Data)
                         affiche()
 
                     }
@@ -140,18 +136,12 @@ function affiche() {
 
     getOptions = gridOptions
 
+    $("#card").toggle(2000)
+    $("#myGrid").css({"height": "70vh"});
+    const gridDiv = document.querySelector('#myGrid');
+    new agGrid.Grid(gridDiv, gridOptions);
+    $("#envoyer").removeAttr('hidden');
 
-    // setup the grid after the page has finished loading
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     $("#card").toggle(10000);
-        $("#card").toggle(2000)
-        const gridDiv = document.querySelector('#myGrid');
-        new agGrid.Grid(gridDiv, gridOptions);
-        $("#envoyer").removeAttr('hidden');
-
-        // var eGridDiv = document.querySelector('#myGrid');
-        // new Grid(eGridDiv, this.gridOptions);
-    // });
 }
 
 function getSelectedRowData() {
@@ -173,39 +163,44 @@ $("#envoyer").on("click", function() {
         },
     })
     .done(function (response) {
-        console.log((response))
-        $("#myGrid").empty();
+        // console.log((response))
+        console.log(typeof response);
+        if (typeof response == "object"){
+            $("#myGrid").empty();
+            var columnDefs = [];
+            for (let key in response[0]) {
+                console.log(key);
+                columnDefs.push({ field: key },);
+            }
 
-        var columnDefs = [];
-        for (let key in response[0]) {
-            console.log(key);
-            columnDefs.push({ field: key },);
+            const gridOptions = {
+                columnDefs: columnDefs,
+                rowData: response,
+
+                defaultColDef: {
+                    flex: 1,
+                    minWidth: 100,
+                    tooltipComponent: 'customTooltip',
+                },
+                rowDragManaged: true,
+                headerHeight: 40,
+                enableCharts: true,
+                pagination : true,
+            };
+            click = false;
+            $("#envoyer").attr("id","tel")
+            $("#tel").html("Télécharger").on("click", function() {
+                onBtnExport()
+            });
+            const gridDiv = document.querySelector('#myGrid');
+            new agGrid.Grid(gridDiv, gridOptions);
+
+            function onBtnExport() {
+                gridOptions.api.exportDataAsCsv();
+            }
         }
-
-        const gridOptions = {
-            columnDefs: columnDefs,
-            rowData: response,
-
-            defaultColDef: {
-                flex: 1,
-                minWidth: 100,
-                tooltipComponent: 'customTooltip',
-            },
-            rowDragManaged: true,
-            headerHeight: 40,
-            enableCharts: true,
-            pagination : true,
-        };
-        click = false;
-        $("#envoyer").attr("id","tel")
-        $("#tel").html("Télécharger").on("click", function() {
-            onBtnExport()
-        });
-        const gridDiv = document.querySelector('#myGrid');
-        new agGrid.Grid(gridDiv, gridOptions);
-
-        function onBtnExport() {
-            gridOptions.api.exportDataAsCsv();
+        else {
+            alert(response)
         }
     })
 })

@@ -44,6 +44,7 @@ html {
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  /*height: 100vh;*/
 }
 
 @-ms-viewport {
@@ -73,6 +74,7 @@ body {
   color: #212529;
   text-align: left;
   background-color: #fafafa;
+  /*height: calc(100vh - 85px);*/
 }
 
 [tabindex="-1"]:focus {
@@ -13366,6 +13368,7 @@ fieldset[disabled] .form-group .form-control {
   border-radius: 3px;
   color: #fff;
   margin: 0 15px;
+  /*height: 100vh;*/
 }
 
 .off-canvas-sidebar .navbar .navbar-collapse .navbar-nav .nav-item .nav-link:hover {

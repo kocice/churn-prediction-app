@@ -136,28 +136,30 @@ def affiche_data(request):
         # Je récupère le data au format json renvoyer par la requette ajax
         # puis je le transform en dictionnaire.
         data = json.loads(request.POST.get('dataset'))
-    else:
-        data = "Je n'en sais rien!"
 
-    # Je transform les données en dataframe pour pouvoir extraire les variables
-    # pertinantes et appliquer la normalisation
-    data = pd.DataFrame(data)
-    dataset = data[variable]
+        # Je transform les données en dataframe pour pouvoir extraire les variables
+        # pertinantes et appliquer la normalisation
+        data = pd.DataFrame(data)
+        try:
+            dataset = data[variable]
+        except:
+            return JsonResponse('Verifiéz les colonnes de vos données!', safe=False)
 
-    # Make prediction
-    dataset.loc[:, :] = norm.transform(dataset)
-    result = model.predict(dataset)
-    pred = pd.DataFrame(result).rename(columns={0: 'Predict'})
-    pred['Predict'] = pred['Predict'].map({0: 'Existing Customer', 1: 'Attrited Customer'})
-    # Ajoute la colonnes de prédiction à mon dataframe utilisé pour la prédiction
-    df = pd.concat([data[variable], pred], axis=1)
+        else:
+            # Make prediction
+            dataset.loc[:, :] = norm.transform(dataset)
+            result = model.predict(dataset)
+            pred = pd.DataFrame(result).rename(columns={0: 'Predict'})
+            pred['Predict'] = pred['Predict'].map({0: 'Existing Customer', 1: 'Attrited Customer'})
+            # Ajoute la colonnes de prédiction à mon dataframe utilisé pour la prédiction
+            df = pd.concat([data[variable], pred], axis=1)
 
-    # Transformation de la reponse en json pour affichage avec ag grid
-    df_json = df.T.to_json()
-    df_json = json.loads(df_json)
-    json_response = []
+            # Transformation de la reponse en json pour affichage avec ag grid
+            df_json = df.T.to_json()
+            df_json = json.loads(df_json)
+            json_response = []
 
-    for value in df_json.values():
-        json_response.append(value)
-    print(json_response)
-    return JsonResponse(json_response, safe=False)
+            for value in df_json.values():
+                json_response.append(value)
+            print(json_response)
+            return JsonResponse(json_response, safe=False)

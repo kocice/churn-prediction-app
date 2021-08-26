@@ -4,23 +4,23 @@
 {% block content %}
 <div class="wrapper">
     <!--   Creative Tim Branding   -->
-    <a href="http://creative-tim.com">
         <div class="logo-container full-screen-table-demo">
-            <div class="logo">
-                <img src="{% static 'assets/img/new_logo.png' %}">
-            </div>
+<!--            <div class="logo">-->
+<!--                <img src="{% static 'assets/img/new_logo.png' %}">-->
+<!--            </div>-->
             <div class="brand">
                 DB Prediction
             </div>
         </div>
-    </a>
 
     <div class="fresh-table full-color-orange full-screen-table">
         <!--
           Available colors for the full background: full-color-blue, full-color-azure, full-color-green, full-color-red, full-color-orange
           Available colors only for the toolbar: toolbar-color-blue, toolbar-color-azure, toolbar-color-green, toolbar-color-red, toolbar-color-orange
         -->
+        <table id="fresh-table" class="table">
         {% include 'includes/table.html' %}
+        </table>
     </div>
 
     <div class="description description-footer">

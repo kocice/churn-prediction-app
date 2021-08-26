@@ -164,3 +164,4 @@ class PredBanquePredresults(models.Model):
         db_table = 'pred_banque_predresults'
 
         # action="{% url 'pred_banque:submit_prediction' %}" method="POST"
+

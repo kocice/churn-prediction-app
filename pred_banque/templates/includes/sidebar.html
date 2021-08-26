@@ -1,10 +1,8 @@
 {% load static %}
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="{% static 'dash-assets/img/sidebar-1.jpg' %}">
       <div class="logo">
-        <a target="_blank" rel="noopener noreferrer"
-           target="_blank" rel="noopener noreferrer"
-           href="#" class="simple-text logo-normal">
-          SIMPLON BANK
+        <a href="#" class="simple-text logo-normal">
+          CREDIT CARD BANK
         </a>
       </div>
 
@@ -29,7 +27,7 @@
 
         <ul class="nav">
            <li class="nav-item nav-item {% if 'index' == segment %} active {% endif %}">
-            <a class="nav-link" href="{% url 'pred_banque:predict_db' 1 %}">
+            <a class="nav-link" href="{% url 'pred_banque:results_db' %}">
               <i class="material-icons">dashboard</i>
               <p>BD-Predict</p>
             </a>

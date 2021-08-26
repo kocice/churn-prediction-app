@@ -1,9 +1,11 @@
-<table id="fresh-table" class="table">
+
     <thead>
-        <th>#</th>
-        {% for col in columns %}
-            <th data-field="{{col|lower}}">{{col}}</th>
-        {% endfor %}
+        <tr>
+            <th>#</th>
+            {% for col in columns %}
+                <th data-field="{{col|lower}}">{{col}}</th>
+            {% endfor %}
+        </tr>
 <!--            <th data-field="actions" data-formatter="operateFormatter" data-events="operateEvents">Actions</th>-->
     </thead>
     <tbody>
@@ -17,7 +19,7 @@
                     {% if i == 'Existing Customer' %}
                         <td class="text-center" style="color: #0C9C14">{{i}}</td>
                     {% elif i == 'Attrited Customer' %}
-                        <td class="text-center" style="color: rgba(243,6,31,0.82)">{{i}}</td>
+                        <td class="text-center" style="color: #F3061FD1">{{i}}</td>
                     {% else %}
                         <td class="text-center">{{i}}</td>
                     {% endif%}
@@ -26,4 +28,3 @@
             </tr>
         {% endfor %}
     </tbody>
-</table>

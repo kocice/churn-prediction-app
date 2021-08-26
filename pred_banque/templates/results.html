@@ -1,46 +1,78 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
-{% block main %}
-    <div class="container pt-5">
-        <div class="row">
+{% block title %} Result {% endblock %}
 
-        <h1>Prediction Results</h1>
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <style type="text/css">
+        h2 {
+            animation: 3s infinite alternate slidein;
+            text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, #c6aee7, #9c27b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+{% endblock stylesheets %}
 
-            <table class="table">
+
+{% block content %}
+        <h2 class="text-center">Prediction Results</h2>
+
+        <table id="example" class="display" style="width:100%">
                 <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">age</th>
-                <th scope="col">total_relationship_count</th>
-                <th scope="col">contacts_count_12_mon</th>
-                <th scope="col">total_revolving_bal</th>
-                <th scope="col">avg_open_to_buy</th>
-                <th scope="col">total_amt_chng_q4_q1</th>
-                <th scope="col">total_trans_amt</th>
-                <th scope="col">total_trans_ct</th>
-                <th scope="col">total_ct_chng_q4_q1</th>
-                <th scope="col">Prediction</th>
-                </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Total Relationship</th>
+                        <th scope="col">Contacts Total</th>
+                        <th scope="col">Total Renouvellement</th>
+                        <th scope="col">AVG</th>
+                        <th scope="col">Total Amt</th>
+                        <th scope="col">Total trans_amt</th>
+                        <th scope="col">Total trans_ct</th>
+                        <th scope="col">Total_ct</th>
+                        <th scope="col">Prediction</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for data in dataset %}
                     <tr>
-                    <th scope="row">{{ data.id }}</th>
-                    <td>{{ data.age }}</td>
-                    <td>{{ data.total_relationship_count }}</td>
-                    <td>{{ data.contacts_count_12_mon }}</td>
-                    <td>{{ data.total_revolving_bal }}</td>
-                    <td>{{ data.avg_open_to_buy }}</td>
-                    <td>{{ data.total_amt_chng_q4_q1 }}</td>
-                    <td>{{ data.total_trans_amt }}</td>
-                    <td>{{ data.total_trans_ct }}</td>
-                    <td>{{ data.total_ct_chng_q4_q1 }}</td>
-                    <td>{{ data.classification }}</td>
+                        <td class="text-center">{{ data.id }}</td>
+                        <td class="text-center">{{ data.age }}</td>
+                        <td class="text-center">{{ data.total_relationship_count }}</td>
+                        <td class="text-center">{{ data.contacts_count_12_mon }}</td>
+                        <td class="text-center">{{ data.total_revolving_bal }}</td>
+                        <td class="text-center">{{ data.avg_open_to_buy }}</td>
+                        <td class="text-center">{{ data.total_amt_chng_q4_q1 }}</td>
+                        <td class="text-center">{{ data.total_trans_amt }}</td>
+                        <td class="text-center">{{ data.total_trans_ct }}</td>
+                        <td class="text-center">{{ data.total_ct_chng_q4_q1 }}</td>
+                        {% if data.classification == 'Existing Customer' %}
+                            <td class="text-center badge badge-success">{{ data.classification }}</td>
+                        {% else %}
+                            <td class="text-center badge badge-danger">{{ data.classification }}</td>
+                        {% endif%}
                     </tr>
                 {% endfor %}
-
                 </tbody>
-            </table>
-        </div>
-    </div>
-{% endblock %}
+        </table>
+
+{% endblock content %}
+
+
+
+{% block javascripts %}
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "scrollX": true,
+                "scrollY":        "50vh",
+                "scrollCollapse": true,
+                "paging":         true
+            });
+        } );
+    </script>
+{% endblock javascripts %}

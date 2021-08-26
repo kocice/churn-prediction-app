@@ -44,7 +44,7 @@ def create_df(data):
     )
 
 
-def view_predict_db(request, nb_page):
+def view_predict_db(request, nb_page=2):
     data = create_df(read_data())
     df = data.drop('attrition_flag', axis=1)
     variable.remove('attrition_flag')
@@ -56,8 +56,10 @@ def view_predict_db(request, nb_page):
     columns = df.columns
     if nb_page == 0:
         return render(request, "compact-table.html", context={'data': df.values, 'columns': columns})
-    else:
+    elif nb_page == 1:
         return render(request, "full-screen-table.html", context={'data': df.values, 'columns': columns})
+    else:
+        return render(request, "results_db.html", context={'data': df.values, 'columns': columns})
 
 
 def predict_chances(request):
@@ -112,16 +114,31 @@ def predict_chances(request):
 
 
 def view_results(request):
+    """
+    Retourne l'ensemble des prédictions éffectuée sur les individus dans la page results.html
+    :param request:
+    :return:
+    """
     # Submit prediction and show all
     data = {"dataset": PredResults.objects.all()}
     return render(request, "results.html", data)
 
 
 def view_dash(request):
+    """
+    Affiche la page d'accueil de notre application
+    :param request:
+    :return:
+    """
     return render(request, "page-user.html")
 
 
 def upload_data(request):
+    """
+
+    :param request:
+    :return: la page d'insertion du fichier csv de prédiction
+    """
     return render(request, "upload_data.html")
 
 
